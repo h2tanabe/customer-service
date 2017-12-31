@@ -26,36 +26,39 @@
 				<div class="col-lg-12 form-group">
 					<label class="col-lg-2 text-center c-label">顧客名*</label>
 					<div class="col-lg-4">
-						<input class="form-control" th:id="name" th:name="name" th:field="*{name}" />
+						<input class="form-control" th:id="name" th:name="name" th:field="*{name}" placeholder="田中太郎" />
 						<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger error">ERROR</span>
 					</div>
 					<label class="col-lg-2 text-center c-label">顧客名カナ*</label>
 					<div class="col-lg-4">
-						<input class="form-control" th:id="nameKana" th:name="nameKana" th:field="*{nameKana}" />
+						<input class="form-control" th:id="nameKana" th:name="nameKana" th:field="*{nameKana}" placeholder="タナカタロウ" />
 						<span th:if="${#fields.hasErrors('nameKana')}" th:errors="*{nameKana}" class="text-danger error">ERROR</span>
 					</div>
 				</div>
 				<div class="col-lg-12 form-group">
-					<label class="col-lg-2 text-center c-label">郵便番号*</label>
+					<label class="col-lg-1 text-center c-label">郵便番号（REST API）*</label>
+					<label class="col-lg-1 text-center c-label">
+						<a class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="郵便番号検索">〒</a>
+					</label>
 					<div class="col-lg-4">
-						<input class="form-control" th:id="postalCode" th:name="postalCode" th:field="*{postalCode}" />
+						<input class="form-control" th:id="postalCode" th:name="postalCode" th:field="*{postalCode}" placeholder="100000" />
 						<span th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}" class="text-danger error">ERROR</span>
 					</div>
 					<label class="col-lg-2 text-center c-label">住所</label>
 					<div class="col-lg-4">
-						<input class="form-control" th:id="address" th:name="address" th:field="*{address}" />
+						<input class="form-control" th:id="address" th:name="address" th:field="*{address}" placeholder="東京都千代田区" />
 						<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger error">ERROR</span>
 					</div>
 				</div>
 				<div class="col-lg-12 form-group">
 					<label class="col-lg-2 text-center c-label">メールアドレス*</label>
 					<div class="col-lg-4">
-						<input class="form-control" th:id="mail" th:name="mail" th:field="*{mail}"/>
+						<input class="form-control" th:id="mail" th:name="mail" th:field="*{mail}" placeholder="xxxx@xxx.com"/>
 						<span th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" class="text-danger error">ERROR</span>
 					</div>
 					<label class="col-lg-2 text-center c-label">電話番号</label>
 					<div class="col-lg-4">
-						<input class="form-control" th:id="tel" th:name="tel" th:field="*{tel}"/>
+						<input class="form-control" th:id="tel" th:name="tel" th:field="*{tel}" placeholder="00-0000-0000"/>
 						<span th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="text-danger error">ERROR</span>
 					</div>
 				</div>
@@ -83,10 +86,12 @@
 	</form>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
-		$(function() {
-			$(".btn-create").one("click", function() {
-				$("#create-form").submit();
-			});
+		$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		});
+
+		$(".btn-create").one("click", function() {
+			$("#create-form").submit();
 		});
 		/*]]>*/
 	</script>

@@ -11,7 +11,7 @@ import org.seasar.doma.Table;
 import h2.app.customer.enums.GenderType;
 
 /**
- * 権限マスタテーブルのエンティティクラスです。
+ * 顧客テーブルのエンティティクラスです。
  */
 @Entity
 @Table(name = "customers")
