@@ -1,0 +1,84 @@
+body {
+	color: #73879C;
+	background: #2A3F54;
+	font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1.471;
+}
+
+.container {
+	width: 100%;
+	padding: 0;
+}
+
+*, :after, :before {
+	box-sizing: border-box;
+}
+
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3,
+	.col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9,
+	.col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3,
+	.col-md-4, .col-md-5, .col-md-55, .col-md-6, .col-md-7, .col-md-8,
+	.col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2,
+	.col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8,
+	.col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2,
+	.col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8,
+	.col-xs-9 {
+	position: relative;
+	min-height: 1px;
+	float: left;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+.text-center {
+	text-align: center;
+}
+
+h2 {
+	font-size: 18px;
+	font-weight: 400;
+}
+
+.error-number {
+	font-size: 90px;
+	line-height: 90px;
+	margin: 20px 0;
+}
+
+p {
+	margin: 0 0 10px;
+}
+
+.mid_center {
+	width: 370px;
+	margin: 0 auto;
+	text-align: center;
+	padding: 10px 20px;
+}
+
+.h1, .h2, .h3, h1, h2, h3 {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.col-middle {
+	margin-top: 5%;
+}
+
+a.tohome:link {
+	color: #ebf6f7;
+}
+
+a.tohome:visited {
+	color: #bce2e8;
+}
+
+a.tohome:hover {
+	color: #f6bfbc;
+}
+
+a.tohome:active {
+	color: #ff8000;
+}

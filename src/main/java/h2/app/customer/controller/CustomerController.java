@@ -27,31 +27,31 @@ import h2.app.customer.util.SelectOptionsUtils;
 @RequestMapping("customers")
 public class CustomerController {
 
-    @Autowired
-    private CustomerSerivce customerService;
+	@Autowired
+	private CustomerSerivce customerService;
 
-    @ModelAttribute
-    CustomerForm setupForm() {
-    	return new CustomerForm();
-    }
+	@ModelAttribute
+	CustomerForm setupForm() {
+		return new CustomerForm();
+	}
 
-    @ModelAttribute
-    CustomerSearchForm setupSearchForm() {
-    	return new CustomerSearchForm();
-    }
+	@ModelAttribute
+	CustomerSearchForm setupSearchForm() {
+		return new CustomerSearchForm();
+	}
 
 	@GetMapping("/list")
-	String listPage(Model model,CustomerSearchForm form,@PageableDefault(size = 100,page = 0) Pageable pageable) {
+	String listPage(Model model, CustomerSearchForm form, @PageableDefault(size = 100, page = 0) Pageable pageable) {
 		Customer customer = new Customer();
 		customer.name = form.getName();
 		customer.address = form.getAddress();
 		customer.mail = form.getMail();
 		customer.tel = form.getTel();
 		SelectOptions options = SelectOptionsUtils.get(pageable, true);
-		List<Customer> page = customerService.findList(customer,options);
-        model.addAttribute("page", page);
-        model.addAttribute("pageOption", options);
-        model.addAttribute("pageable", pageable);
+		List<Customer> page = customerService.findList(customer, options);
+		model.addAttribute("page", page);
+		model.addAttribute("pageOption", options);
+		model.addAttribute("pageable", pageable);
 		return "customers/list";
 	}
 
@@ -61,9 +61,8 @@ public class CustomerController {
 	}
 
 	@PostMapping("/create")
-	String create(@Validated CustomerForm form,BindingResult result ,Model model) {
-
-		if(result.hasErrors()) {
+	String create(@Validated CustomerForm form, BindingResult result, Model model) {
+		if (result.hasErrors()) {
 			return createPage(model);
 		}
 		Customer customer = new Customer();
@@ -79,8 +78,8 @@ public class CustomerController {
 	}
 
 	@GetMapping("/edit/{accountId}")
-	String editPage(@PathVariable("accountId") Long accountId, Model model,CustomerForm form, boolean result) {
-		if(false == result){
+	String editPage(@PathVariable("accountId") Long accountId, Model model, CustomerForm form, boolean result) {
+		if (false == result) {
 			Customer customer = customerService.findById(accountId).get();
 			form.setName(customer.name);
 			form.setNameKana(customer.nameKana);
@@ -90,14 +89,14 @@ public class CustomerController {
 			form.setMail(customer.mail);
 		}
 		model.addAttribute("accountId", accountId);
-        //model.addAttribute("customer", customer); formを利用するため model.addAttributeを使わない
+		//model.addAttribute("customer", customer); formを利用するため model.addAttributeを使わない
 		return "customers/edit";
 	}
 
 	@PostMapping("/edit")
-	String edit(@RequestParam("id")Long accountId,@Validated CustomerForm form,BindingResult result ,Model model) {
-		if(result.hasErrors()){
-			return editPage(accountId,model,form,true);
+	String edit(@RequestParam("id") Long accountId, @Validated CustomerForm form, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			return editPage(accountId, model, form, true);
 		}
 		Customer customer = new Customer();
 		customer.id = accountId;
@@ -108,11 +107,11 @@ public class CustomerController {
 		customer.tel = form.getTel();
 		customer.mail = form.getMail();
 		customerService.update(customer);
-        return "redirect:/customers/list";
+		return "redirect:/customers/list";
 	}
 
 	@GetMapping("/delete/{accountId}")
-	String delete(@PathVariable("accountId") Long accountId,Model model) {
+	String delete(@PathVariable("accountId") Long accountId, Model model) {
 		Customer customer = new Customer();
 		customer.id = accountId;
 		customerService.delete(customer);
