@@ -38,10 +38,10 @@
 				<div class="col-lg-12 form-group">
 					<label class="col-lg-1 text-center c-label">郵便番号（REST API）*</label>
 					<label class="col-lg-1 text-center c-label">
-						<a class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="郵便番号検索">〒</a>
+						<a class="btn btn-warning" id="address-search-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="郵便番号検索">〒</a>
 					</label>
 					<div class="col-lg-4">
-						<input class="form-control" th:id="postalCode" th:name="postalCode" th:field="*{postalCode}" placeholder="100000" />
+						<input class="form-control" th:id="postalCode" th:name="postalCode" th:field="*{postalCode}" placeholder="100000" maxlength="7"/>
 						<span th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}" class="text-danger error">ERROR</span>
 					</div>
 					<label class="col-lg-2 text-center c-label">住所</label>
@@ -90,9 +90,32 @@
 		  $('[data-toggle="tooltip"]').tooltip()
 		});
 
+		$("#address-search-btn").on("click", function() {
+			var apiUrl = '/api/address/zip=' + $('#postalCode').val();
+			$.ajax({
+			    url: apiUrl ,
+			    type : "GET",
+			    async   : true,
+			    dataType : "json",
+			    cache : false
+			}).then(
+			    function (data) {
+			        var address = data[0]['kenName'] + data[0]['cityName'] + data[0]['townName'];
+			        $('#address').val(address);
+			    },
+			    function (data) {
+			    	if(data.responseJSON['status'] == 404){
+						alert("該当のものがありません");
+			    	}else{
+						alert("読み込み失敗");
+			    	}
+			});
+		});
+
 		$(".btn-create").one("click", function() {
 			$("#create-form").submit();
 		});
+
 		/*]]>*/
 	</script>
 </body>

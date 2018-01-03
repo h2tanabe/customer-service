@@ -25,43 +25,46 @@
 		<div class="row">
 			<div class="form-group">
 				<div class="col-lg-12 form-group">
-					<label class="col-lg-1">顧客名*</label>
+					<label class="col-lg-1 text-center c-label">顧客名*</label>
 					<div class="col-lg-4">
 						<input class="form-control" th:id="name" th:name="name" th:field="*{name}" />
 						<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger error">ERROR</span>
 					</div>
-					<label class="col-lg-1">顧客名カナ*</label>
+					<label class="col-lg-1 text-center c-label">顧客名カナ*</label>
 					<div class="col-lg-4">
 						<input class="form-control" th:id="nameKana" th:name="nameKana" th:field="*{nameKana}" />
 						<span th:if="${#fields.hasErrors('nameKana')}" th:errors="*{nameKana}" class="text-danger error">ERROR</span>
 					</div>
 				</div>
 				<div class="col-lg-12 form-group">
-					<label class="col-lg-1">郵便番号 (REST APIで検索）*</label>
+					<label class="col-lg-1 text-center c-label">郵便番号 (REST APIで検索）*</label>
+					<label class="col-lg-1 text-center c-label">
+						<a class="btn btn-warning" id="address-search-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="郵便番号検索">〒</a>
+					</label>
 					<div class="col-lg-4">
-						<input class="form-control" th:id="postalCode" th:name="postalCode" th:field="*{postalCode}" />
+						<input class="form-control" th:id="postalCode" th:name="postalCode" th:field="*{postalCode}" maxlength="7"/>
 						<span th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}" class="text-danger error">ERROR</span>
 					</div>
-					<label class="col-lg-1">住所</label>
+					<label class="col-lg-1 text-center c-label">住所</label>
 					<div class="col-lg-4">
 						<input class="form-control" th:id="address" th:name="address" th:field="*{address}" />
 						<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger error">ERROR</span>
 					</div>
 				</div>
 				<div class="col-lg-12 form-group">
-					<label class="col-lg-1">メールアドレス*</label>
+					<label class="col-lg-1 text-center c-label">メールアドレス*</label>
 					<div class="col-lg-4">
 						<input class="form-control" th:id="mail" th:name="mail" th:field="*{mail}"/>
 						<span th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" class="text-danger error">ERROR</span>
 					</div>
-					<label class="col-lg-1">電話番号</label>
+					<label class="col-lg-1 text-center c-label">電話番号</label>
 					<div class="col-lg-4">
 						<input class="form-control" th:id="tel" th:name="tel" th:field="*{tel}"/>
 						<span th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="text-danger error">ERROR</span>
 					</div>
 				</div>
 				<div class="col-lg-12 form-group">
-					<label class="col-lg-1">誕生日</label>
+					<label class="col-lg-1 text-center c-label">誕生日</label>
 					<div class="col-lg-4">
 						<input class="form-control" th:id="birthDate" th:name="birthDate" th:field="*{birthDate}"/>
 						<span th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}" class="text-danger error">ERROR</span>
@@ -87,6 +90,28 @@
 		$(function() {
 			$(".btn-edit").one("click", function() {
 				$("#edit-form").submit();
+			});
+		});
+
+		$("#address-search-btn").on("click", function() {
+			var apiUrl = '/api/address/zip=' + $('#postalCode').val();
+			$.ajax({
+			    url: apiUrl ,
+			    type : "GET",
+			    async   : true,
+			    dataType : "json",
+			    cache : false
+			}).then(
+			    function (data) {
+			        var address = data[0]['kenName'] + data[0]['cityName'] + data[0]['townName'];
+			        $('#address').val(address);
+			    },
+			    function (data) {
+			    	if(data.responseJSON['message'] == 'NotFound'){
+						alert("該当のものがありません");
+			    	}else{
+						alert("読み込み失敗");
+			    	}
 			});
 		});
 		/*]]>*/

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/customers")
-public class CustomerRestController {
+public class CustomerRestController extends AbstractController{
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;

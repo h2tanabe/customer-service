@@ -15,26 +15,31 @@ import h2.app.customer.entity.Customer;
 @Transactional
 public class CustomerSerivce {
 
-    @Autowired
-    private CustomerDao customerDao;
+	@Autowired
+	private CustomerDao customerDao;
 
-    public Optional<Customer> findById(Long id) {
-        return customerDao.selectById(id);
-    }
+	public Optional<Customer> findById(Long id) {
+		return customerDao.selectById(id);
+	}
 
-    public List<Customer> findList(Customer customer,SelectOptions option) {
-        return customerDao.search(customer,option,"order by 1 desc");
-    }
+	public List<Customer> findList(Customer customer, SelectOptions option) {
+		return customerDao.search(customer, option, "order by 1 desc");
+	}
+
+	public List<Customer> findAll() {
+		return customerDao.selectAll("order by 1 desc");
+	}
 
 	public void insert(Customer customer) {
-        customerDao.insert(customer);
+		customerDao.insert(customer);
 	}
 
 	public void update(Customer customer) {
-        customerDao.update(customer);
+		customerDao.update(customer);
 	}
 
 	public void delete(Customer customer) {
-        customerDao.delete(customer);
+		customerDao.delete(customer);
 	}
+
 }

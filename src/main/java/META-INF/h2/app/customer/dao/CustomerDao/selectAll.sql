@@ -1,0 +1,5 @@
+select
+  *
+from
+  customers
+/*# orderBy */

@@ -9,18 +9,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import h2.app.customer.entity.Address;
+import h2.app.customer.exception.DataNotFoundException;
 import h2.app.customer.service.AddressSerivce;
 
 @RestController
 @RequestMapping("api/address")
-public class AddressController {
-
+public class AddressController extends AbstractController {
 	@Autowired
 	AddressSerivce addressSerivce;
 
 	@GetMapping("zip={zip}")
-	public List<Address>  findZip(@PathVariable("zip") String zip) {
-		return addressSerivce.findByZip(zip);
+	public List<Address>  findZip(@PathVariable("zip") String zip){
+		List<Address> address = addressSerivce.findByZip(zip);
+		if(address.size() == 0 ) {
+			throw new DataNotFoundException("NotFound");
+		}
+		return address;
 	}
-
 }

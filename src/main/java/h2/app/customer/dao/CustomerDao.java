@@ -32,4 +32,7 @@ public interface CustomerDao {
 	@Select
 	List<Customer> search(Customer customer,SelectOptions options,String orderBy);
 
+	@Select
+	List<Customer> selectAll(String orderBy);
+
 }
