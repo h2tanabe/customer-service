@@ -2,6 +2,7 @@ package h2.app.customer.dao;
 
 import java.util.List;
 
+import org.seasar.doma.BatchInsert;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
@@ -21,10 +22,16 @@ public interface AddressDao {
 	@Insert
 	int insert(Address address);
 
+	@BatchInsert
+	int[] bacthInsert(List<Address> address);
+
 	@Update
 	int update(Address address);
 
 	@Delete
 	int delete(Address address);
+
+	@Delete(sqlFile = true)
+    int deleteAll();
 
 }

@@ -66,7 +66,7 @@
 				<div class="col-lg-12 form-group">
 					<label class="col-lg-1 text-center c-label">誕生日</label>
 					<div class="col-lg-4">
-						<input class="form-control" th:id="birthDate" th:name="birthDate" th:field="*{birthDate}"/>
+						<input class="form-control datepicker" th:id="birthDate" th:name="birthDate" th:field="*{birthDate}" placeholder="1989-01-01"/>
 						<span th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}" class="text-danger error">ERROR</span>
 					</div>
 				</div>
@@ -88,6 +88,7 @@
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		$(function() {
+			$( ".datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
 			$(".btn-edit").one("click", function() {
 				$("#edit-form").submit();
 			});

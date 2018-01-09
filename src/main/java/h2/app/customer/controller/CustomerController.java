@@ -35,6 +35,7 @@ import h2.app.customer.entity.CustomerCSV;
 import h2.app.customer.form.CustomerForm;
 import h2.app.customer.form.CustomerSearchForm;
 import h2.app.customer.service.CustomerSerivce;
+import h2.app.customer.util.DateUtils;
 import h2.app.customer.util.SelectOptionsUtils;
 
 @Controller
@@ -89,7 +90,7 @@ public class CustomerController extends AbstractController{
 		customer.mail = form.getMail();
 		customer.createdBy = loginUser.getName();
 		customer.updatedBy = loginUser.getName();
-		//customer.birthDate = form.getBirthDate();
+		customer.birthDate = DateUtils.stringToLoacleDate(form.getBirthDate());
 		customerService.insert(customer);
 		return "redirect:/customers/list";
 	}
@@ -104,6 +105,7 @@ public class CustomerController extends AbstractController{
 			form.setAddress(customer.address);
 			form.setTel(customer.tel);
 			form.setMail(customer.mail);
+			form.setBirthDate(customer.birthDate.toString());
 		}
 		model.addAttribute("accountId", accountId);
 		//model.addAttribute("customer", customer); formを利用するため model.addAttributeを使わない
@@ -123,6 +125,7 @@ public class CustomerController extends AbstractController{
 		customer.address = form.getAddress();
 		customer.tel = form.getTel();
 		customer.mail = form.getMail();
+		customer.birthDate = DateUtils.stringToLoacleDate(form.getBirthDate());
 		customerService.update(customer);
 		return "redirect:/customers/list";
 	}

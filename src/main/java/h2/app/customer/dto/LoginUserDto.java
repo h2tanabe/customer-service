@@ -2,20 +2,24 @@ package h2.app.customer.dto;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class LoginUserDto implements Serializable, UserDetails {
+import h2.app.customer.entity.User;
+
+public class LoginUserDto extends User implements Serializable, UserDetails {
+	private static final long serialVersionUID = 9127151324717885285L;
 
 	@Override
-	public String getPassword() {
-		return null;
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Collections.emptyList();
 	}
 
 	@Override
 	public String getUsername() {
-		return UserDetails.class.getName();
+		return this.getUsername();
 	}
 
 	@Override
@@ -39,7 +43,7 @@ public class LoginUserDto implements Serializable, UserDetails {
 	}
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.getAuthorities();
+	public String getPassword() {
+		return null;
 	}
 }

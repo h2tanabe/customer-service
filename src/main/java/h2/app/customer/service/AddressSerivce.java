@@ -20,4 +20,11 @@ public class AddressSerivce {
         return addressDao.selectByZip(zip);
     }
 
+    public  int[] batchInsert(List<Address> address) {
+        return addressDao.bacthInsert(address);
+    }
+
+    public  int deleteAll() {
+        return addressDao.deleteAll();
+    }
 }
