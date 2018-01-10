@@ -26,7 +26,7 @@
 			</div>
 		</div>
 		<br />
-		<form th:action="@{/address/create}" enctype="multipart/form-data" id="send-form" method="post">
+		<form th:action="@{/api/address/create}" enctype="multipart/form-data" id="send-form" method="post">
 		<!-- <form th:action="@{/address/create}" enctype="multipart/form-data" id="create-form" method="post"> -->
 			<div class="col-md-12">
 				<fieldset>
@@ -44,26 +44,26 @@
 			<div class="progress">
 				<div class="progress-bar progress-bar-striped active"
 					role="progressbar" aria-valuenow="0" aria-valuemin="0"
-					aria-valuemax="100" style="width: 0%">40%</div>
+					aria-valuemax="100" style="width: 0%">20%</div>
 			</div>
 		</div>
 	</div>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		$("#submitBtn").on("click", function() {
+			$('.progress-bar').css('width', '20%');
 			var ajaxUrl = "/api/address/create";
 			var form = $('#send-form').get()[0];
 			var formData = new FormData(form);
-			$('.progress-bar').css('width', '40%');
+			$('.progress-bar').css('width', '60%');
 			$.ajax({
-				type : 'post', // HTTP通信の種類
+				type : "POST", // HTTP通信の種類
 				url : ajaxUrl, // リクエストを送信する先のURL
-				dataType : 'json', // サーバーから返されるデータの型
+				dataType : "json", // サーバーから返されるデータの型
 				data : formData, // サーバーに送信するデータ
 				processData : false,
 				contentType : false,
 			}).done(function(data) { // Ajax通信が成功した時の処理
-				$('.progress-bar').css('width', '100%');
 				alert("アップロードが完了しました。");
 			}).fail(function(data) { // Ajax通信が失敗した時の処理
 				alert("アップロードが失敗しました。" + " Data :" + data);

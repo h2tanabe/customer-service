@@ -12,7 +12,9 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.MappingIterator;
@@ -44,15 +45,66 @@ public class AddressController extends AbstractController {
 		return "address/create";
 	}
 
+	//住所マスタアップデートAPI
 	@PostMapping("/create")
-	@ResponseStatus(code=HttpStatus.OK)
-	String create(@RequestParam("upload_file") MultipartFile multipartFile,
+	public ResponseEntity<String> updateFile(@RequestParam("upload_file") MultipartFile multipartFile,
+			@AuthenticationPrincipal UserDetails loginUser,
+			//@RequestParam("filetype") String fileType,
+			Model model) throws Exception {
+		addressSerivce.deleteAll();
+		Pattern pat = Pattern.compile("^#.*\n", Pattern.MULTILINE);
+		CsvMapper mapper = new CsvMapper();
+		CsvSchema schema = mapper.schemaFor(AddressCSV.class);
+		List<Address> adressList = new ArrayList<>();
+		int raw = 0;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("header1", "heaer1-value");
+
+		InputStream inputStream = multipartFile.getInputStream();
+		try (BufferedReader reader = new BufferedReader(
+				new InputStreamReader(inputStream, Charset.forName("UTF-8")))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (raw == 0) {
+					raw++;
+					continue;
+				}
+				String newTxt = pat.matcher(line).replaceAll("");
+				MappingIterator<AddressCSV> mi = mapper.readerFor(AddressCSV.class).with(schema).readValues(newTxt);
+				AddressCSV csv = mi.nextValue();
+				Address adress = new Address();
+				adress.oldZip = Integer.parseInt(StringUtils.trim(csv.kenCd));
+				adress.kenCd = Integer.parseInt(StringUtils.trim(csv.allAreaCd));
+				adress.zip = Integer.parseInt(StringUtils.trim(csv.zip));
+				adress.kenFuri = csv.kenFuri;
+				adress.kenName = csv.kenName;
+				adress.cityFuri = csv.cityFuri;
+				adress.cityName = csv.cityName;
+				adress.townFuri = csv.townFuri;
+				adress.townName = csv.townName;
+				adress.createdAt = LocalDateTime.now();
+				adress.createdBy = "test";
+				adressList.add(adress);
+				System.out.println(line);
+			}
+			addressSerivce.batchInsert(adressList);
+			return new ResponseEntity<>("OK TEXT CCC", headers, HttpStatus.OK);
+			//statusOK(model);
+			//return "redirect:/address/create";
+
+		} catch (IOException | IllegalArgumentException | StringIndexOutOfBoundsException e) {
+			return new ResponseEntity<>(e.toString(), headers, HttpStatus.BAD_REQUEST);
+			//statusNG(model);
+		}
+	}
+
+	@PostMapping("/create2")
+	void create(@RequestParam("upload_file") MultipartFile multipartFile,
 			@AuthenticationPrincipal UserDetails loginUser,
 			//@RequestParam("filetype") String fileType,
 			Model model) throws Exception {
 
-		addressSerivce.deleteAll();
-
+		//addressSerivce.deleteAll();
 		Pattern pat = Pattern.compile("^#.*\n", Pattern.MULTILINE);
 		CsvMapper mapper = new CsvMapper();
 		CsvSchema schema = mapper.schemaFor(AddressCSV.class);
@@ -85,13 +137,13 @@ public class AddressController extends AbstractController {
 				adressList.add(adress);
 				System.out.println(line);
 		    }
-			addressSerivce.batchInsert(adressList);
-		    return "redirect:/address/create";
+		    //addressSerivce.batchInsert(adressList);
+			//statusOK(model);
+			//return "redirect:/address/create";
 
 		}catch (IOException | IllegalArgumentException | StringIndexOutOfBoundsException e) {
-		    return "redirect:/address/create";
+			//statusNG(model);
 		}
-
 		/*
 		InputStream inputStream = multipartFile.getInputStream();
 		try(BufferedReader reader = new BufferedReader(
