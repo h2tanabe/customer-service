@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("news")
-public class NewsController extends AbstractController{
+public class NewsController extends AbstractController {
 
 	@GetMapping("")
-    String blank() {
+	String blank() {
 		return "news/index";
-    }
+	}
 
-    @RequestMapping("/encode")
-    @ResponseBody
-    public String encode(@RequestParam String password) {
-        return new BCryptPasswordEncoder().encode(password);
-    }
+	@RequestMapping("/encode")
+	@ResponseBody
+	public String encode(@RequestParam String password) {
+		return new BCryptPasswordEncoder().encode(password);
+	}
 
 }

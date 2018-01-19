@@ -105,7 +105,7 @@ public class CustomerController extends AbstractController{
 			form.setAddress(customer.address);
 			form.setTel(customer.tel);
 			form.setMail(customer.mail);
-			form.setBirthDate(customer.birthDate.toString());
+			form.setBirthDate(DateUtils.loacleDateToString(customer.birthDate));
 		}
 		model.addAttribute("accountId", accountId);
 		//model.addAttribute("customer", customer); formを利用するため model.addAttributeを使わない

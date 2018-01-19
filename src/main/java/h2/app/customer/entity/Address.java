@@ -3,6 +3,8 @@ package h2.app.customer.entity;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Table;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * 顧客テーブルのエンティティクラスです。
  */
@@ -23,6 +25,7 @@ public class Address extends BaseEntity {
 	/**
 	 * 郵便番号
 	 */
+	@ApiModelProperty(value = "郵便番号", required = true)
 	public Integer zip;
 
 	/**

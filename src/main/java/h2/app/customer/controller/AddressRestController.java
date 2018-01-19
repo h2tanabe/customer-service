@@ -34,14 +34,17 @@ import h2.app.customer.entity.Address;
 import h2.app.customer.entity.AddressCSV;
 import h2.app.customer.exception.DataNotFoundException;
 import h2.app.customer.service.AddressSerivce;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("api/address")
 public class AddressRestController extends AbstractController {
+
 	@Autowired
 	AddressSerivce addressSerivce;
 
 	//郵便番号検索API
+	@ApiOperation(value = "一件取得", notes = "郵便番号から住所の情報を取得します。", response = Address.class, tags = {"Address",})
 	@GetMapping("zip={zip}")
 	public List<Address> findZip(@PathVariable("zip") String zip) {
 		List<Address> address = addressSerivce.findByZip(zip);
@@ -62,6 +65,7 @@ public class AddressRestController extends AbstractController {
 	}
 
 	//住所マスタアップデートAPI
+	@ApiOperation(value = "ファイルアップロード", notes = "ファイルアップロードのAPI")
 	@PostMapping("/create")
 	public List<String> create(@RequestParam("upload_file") MultipartFile multipartFile,
 			@AuthenticationPrincipal UserDetails loginUser,
@@ -73,8 +77,8 @@ public class AddressRestController extends AbstractController {
 		CsvSchema schema = mapper.schemaFor(AddressCSV.class);
 		List<Address> adressList = new ArrayList<>();
 		int raw = 0;
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("header1", "heaer1-value");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("header1", "heaer1-value");
 		List<String> string = new ArrayList<>();
 
 		InputStream inputStream = multipartFile.getInputStream();
@@ -106,7 +110,7 @@ public class AddressRestController extends AbstractController {
 			}
 			addressSerivce.batchInsert(adressList);
 			string.add(HttpStatus.OK.getReasonPhrase());
-			return  string;
+			return string;
 			//statusOK(model);
 			//return "redirect:/address/create";
 

@@ -27,13 +27,11 @@
 		</div>
 		<br />
 		<form th:action="@{/api/address/create}" enctype="multipart/form-data" id="send-form" method="post">
-		<!-- <form th:action="@{/address/create}" enctype="multipart/form-data" id="create-form" method="post"> -->
 			<div class="col-md-12">
 				<fieldset>
 					<input type="file" name="upload_file" id="upload_file"
 						class="col-lg-5 btn btn-outline btn-primary btn-create" />
-						<i class="fa fa-leaf"></i>登録
-						<input id="submitBtn" type="submit" class="btn btn-warning" />送信
+						<input id="submitBtn" type="submit" class="btn btn-warning"/>
 				</fieldset>
 			</div>
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
@@ -50,25 +48,9 @@
 	</div>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
-		$("#submitBtn").on("click", function() {
-			$('.progress-bar').css('width', '20%');
-			var ajaxUrl = "/api/address/create";
-			var form = $('#send-form').get()[0];
-			var formData = new FormData(form);
-			$('.progress-bar').css('width', '60%');
-			$.ajax({
-				type : "POST", // HTTP通信の種類
-				url : ajaxUrl, // リクエストを送信する先のURL
-				dataType : "json", // サーバーから返されるデータの型
-				data : formData, // サーバーに送信するデータ
-				processData : false,
-				contentType : false,
-			}).done(function(data) { // Ajax通信が成功した時の処理
-				alert("アップロードが完了しました。");
-			}).fail(function(data) { // Ajax通信が失敗した時の処理
-				alert("アップロードが失敗しました。" + " Data :" + data);
+			$('#submitBtn').submit(function() {
+			    alert("#");
 			});
-		});
 		/*]]>*/
 	</script>
 </body>
