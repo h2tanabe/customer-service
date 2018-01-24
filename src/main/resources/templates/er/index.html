@@ -14,108 +14,251 @@
 		<div th:replace="parts/menubar :: nav"></div>
 	</div>
 
-	<form th:action="@{/customers/create}" th:object="${customerForm}" id="create-form" method="post">
 	<div id="page-wrapper">
 		<div class="row">
 			<div class="col-lg-12">
-				<h3 class="page-header">ER図</h3>
+				<h3 class="page-header">ER図【HTML5 Canvas】</h3>
 			</div>
 		</div>
 		<div class="row">
-			<div class="form-group">
-				<div class="col-lg-12 form-group">
-					<label class="col-lg-2 text-center c-label">顧客名*</label>
-					<div class="col-lg-4">
-						<input class="form-control" th:id="name" th:name="name" th:field="*{name}" placeholder="田中太郎" />
-						<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger error">ERROR</span>
-					</div>
-					<label class="col-lg-2 text-center c-label">顧客名カナ*</label>
-					<div class="col-lg-4">
-						<input class="form-control" th:id="nameKana" th:name="nameKana" th:field="*{nameKana}" placeholder="タナカタロウ" />
-						<span th:if="${#fields.hasErrors('nameKana')}" th:errors="*{nameKana}" class="text-danger error">ERROR</span>
-					</div>
-				</div>
-				<div class="col-lg-12 form-group">
-					<label class="col-lg-1 text-center c-label">郵便番号（REST API）*</label>
-					<label class="col-lg-1 text-center c-label">
-						<a class="btn btn-warning" id="address-search-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="郵便番号検索">〒</a>
-					</label>
-					<div class="col-lg-4">
-						<input class="form-control" th:id="postalCode" th:name="postalCode" th:field="*{postalCode}" placeholder="100000" maxlength="7"/>
-						<span th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}" class="text-danger error">ERROR</span>
-					</div>
-					<label class="col-lg-2 text-center c-label">住所</label>
-					<div class="col-lg-4">
-						<input class="form-control" th:id="address" th:name="address" th:field="*{address}" placeholder="東京都千代田区" />
-						<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger error">ERROR</span>
-					</div>
-				</div>
-				<div class="col-lg-12 form-group">
-					<label class="col-lg-2 text-center c-label">メールアドレス*</label>
-					<div class="col-lg-4">
-						<input class="form-control" th:id="mail" th:name="mail" th:field="*{mail}" placeholder="xxxx@xxx.com"/>
-						<span th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" class="text-danger error">ERROR</span>
-					</div>
-					<label class="col-lg-2 text-center c-label">電話番号</label>
-					<div class="col-lg-4">
-						<input class="form-control" th:id="tel" th:name="tel" th:field="*{tel}" placeholder="00-0000-0000"/>
-						<span th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="text-danger error">ERROR</span>
-					</div>
-				</div>
-				<div class="col-lg-12 form-group">
-					<label class="col-lg-2 text-center c-label">誕生日*</label>
-					<div class="col-lg-4">
-						<input class="form-control datepicker" th:id="birthDate" th:name="birthDate" th:field="*{birthDate}"  placeholder="1989-01-01"/>
-						<span th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}" class="text-danger error">ERROR</span>
-					</div>
-				</div>
-			</div>
+			<canvas width="1000" height="1000"></canvas>
 		</div>
 		<br />
-		<th:block th:if="${#fields.hasErrors('all')}">
-			<div class="alert alert-danger">エラー箇所を訂正してください</div>
-		</th:block>
-		<div class="col-md-12">
-			<div class="panel-body">
-				<button type="button" class="col-lg-5 btn btn-outline btn-primary btn-create">
-					<i class="fa fa-leaf"></i>作成
-				</button>
-			</div>
-		</div>
 	</div>
-	</form>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
-		$(function () {
-			$('[data-toggle="tooltip"]').tooltip();
-			$( ".datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
-		});
 
-		$("#address-search-btn").on("click", function() {
-			var apiUrl = '/api/address/zip=' + $('#postalCode').val();
-			$.ajax({
-			    url: apiUrl ,
-			    type : "GET",
-			    async   : true,
-			    dataType : "json",
-			    cache : false
-			}).then(
-			    function (data) {
-			        var address = data[0]['kenName'] + data[0]['cityName'] + data[0]['townName'];
-			        $('#address').val(address);
-			    },
-			    function (data) {
-			    	if(data.responseJSON['status'] == 404){
-						alert("該当のものがありません");
-			    	}else{
-						alert("読み込み失敗");
-			    	}
+		//配置設定
+		$.jCanvas.defaults.fromCenter = false;
+		$.jCanvas.defaults.layer = true;
+
+		var columName1 = [ "users", "user_name", "encoded_password" ];
+		var columName2 = [ "address", "old_zip", "ken_cd", "ken_furi","city_furi", "town_furi", "ken_name", "city_name" ];
+		var columName3 = [ "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8",
+				"t9", "t10", "t11" ];
+		var columName4 = [ "メモ書き" ];
+
+		// 50にしているのが高さ。
+		createTable("g1", 50, 50, columName1, 'red');
+		createTable("g2", 300, 50, columName2, 'red');
+		createTable("g3", 400, 70, columName3, 'blue');
+		createMemoTable("m4", 600, 50, columName4, 'yellow');
+
+		// エンティティの線を引く
+		drawLink("g1","g2");
+		drawLink("g2","g3");
+
+		// ERのテーブル作成
+		// 引数 グループ名、ヨコの距離、テタの距離、コラム名
+		function createTable(tableName, xl, yl, columName, color) {
+			let xtext = xl;
+			let ytext = yl;
+			let xsquare = xl - 8; // テキストラインより下げる（インデント）
+			let ysquare = yl; // 高さは合わせる
+			let borderWidth = 0;
+			let borderHeight = 0;
+			let boxColor = color;
+
+			// 線・四角形・テキストをグループ化
+			//テキスト記載
+			function drawText(text, x, y, name, tableName) {
+				$("canvas").drawText({
+					fillStyle : "black",
+					strokeStyle : "black",
+					strokeWidth : "0.5",
+					x : x,
+					y : y,
+					fontSize : 14,
+					fontFamily : "Verdana, sans-serif",
+					text : text,
+					name : name + "-text",
+					draggable : true, //図形のドロップアンドドラック
+					groups : [ tableName ],
+					dragGroups : [ tableName ],
+				});
+			}
+
+			//テキスト記載（横軸固定、縦30間隔）
+			for (var i = 0; i < columName.length; i++) {
+				// コラム記載
+				drawText(columName[i], xtext, ytext, columName[i], tableName);
+				if (i == 0) {
+					ytext = ytext + 30;
+				} else {
+					ytext = ytext + 20;
+				}
+			}
+
+			// テキスト幅のMAXから四角形の幅調整
+			// カラム数により高さ調整
+			for (var i = 0; i < columName.length; i++) {
+				borderWidth = Math.max(borderWidth, $("canvas").getLayer(
+						columName[i] + "-text").width);
+				borderHeight = (columName.length * 20.5) + 10;
+			}
+
+			//四角形
+			$("canvas").drawRect({
+				strokeStyle : "blue",
+				strokeWidth : 1,
+				x : xsquare,
+				y : ysquare,
+				width : borderWidth + 15,
+				height : borderHeight,
+				draggable : true,
+				groups : [ tableName ],
+				dragGroups : [ tableName ],
+				bringToFront : true,
+				opacity : 0.2,
+				fillStyle : boxColor,
+				click : doClick,
+				name: tableName,
+		        drag: onDrag,
+		        dragstop: onDragStop,
+		        dragcancel: onDragCancel
 			});
-		});
+			//テーブル名の下線
+			$("canvas").drawLine({
+				strokeStyle : "black",
+				strokeWidth : 1,
+				x1 : xsquare,
+				y1 : ysquare + 20,
+				x2 : xsquare + borderWidth + 15,
+				y2 : ysquare + 20,
+				draggable : true,
+				groups : [ tableName ],
+				dragGroups : [ tableName ]
+			});
+		}
 
-		$(".btn-create").one("click", function() {
-			$("#create-form").submit();
-		});
+		function createMemoTable(tableName, xl, yl, columName, color) {
+			let xtext = xl;
+			let ytext = yl;
+			let xsquare = xl - 8; // テキストラインより下げる（インデント）
+			let ysquare = yl; // 高さは合わせる
+			let borderWidth = 0;
+			let borderHeight = 0;
+			let boxColor = color;
+
+			// 線・四角形・テキストをグループ化
+			//テキスト記載
+			function drawText(text, x, y, name, tableName) {
+				$("canvas").drawText({
+					fillStyle : "black",
+					strokeStyle : "black",
+					strokeWidth : "0.5",
+					x : x,
+					y : y,
+					fontSize : 14,
+					fontFamily : "Verdana, sans-serif",
+					text : text,
+					name : name + "-text",
+					draggable : true, //図形のドロップアンドドラック
+					groups : [ tableName ],
+					dragGroups : [ tableName ],
+				});
+			}
+
+			//テキスト記載（横軸固定、縦30間隔）
+			for (var i = 0; i < columName.length; i++) {
+				// コラム記載
+				drawText(columName[i], xtext, ytext, columName[i], tableName);
+				if (i == 0) {
+					ytext = ytext + 30;
+				} else {
+					ytext = ytext + 20;
+				}
+			}
+
+			// テキスト幅のMAXから四角形の幅調整
+			// カラム数により高さ調整
+			for (var i = 0; i < columName.length; i++) {
+				borderWidth = Math.max(borderWidth, $("canvas").getLayer(
+						columName[i] + "-text").width);
+				borderHeight = (columName.length * 20.5) + 10;
+			}
+
+			//四角形
+			$("canvas").drawRect({
+				strokeStyle : "blue",
+				strokeWidth : 1,
+				x : xsquare,
+				y : ysquare,
+				width : borderWidth + 15,
+				height : borderHeight,
+				draggable : true,
+				groups : [ tableName ],
+				dragGroups : [ tableName ],
+				bringToFront : true,
+				opacity : 0.2,
+				fillStyle : boxColor,
+				click : doClick,
+				name: tableName,
+		        drag: onDrag,
+		        dragstop: onDragStop,
+		        dragcancel: onDragCancel
+			});
+		}
+
+		// 線を引き
+		function drawLink(entity1,entity2) {
+			var border1 = $("canvas").getLayer(entity1);
+			var border2 = $("canvas").getLayer(entity2);
+
+
+			$("canvas").drawLine({
+				strokeStyle : "black",
+				strokeWidth : 1,
+				draggable : false,
+				x1: border1.x + border1.width,
+				y1: border1.y + ( border1.height / 2 ), // Start point
+				//cx1: border1.x + border1.width + 100,
+				//cy1: border1.y + ( border1.height / 2 ), // Control point
+				//cx2: border1.x + border1.width + 150,
+				//cy2: border1.y + ( border1.height / 2 ) + 150, // Control point
+				x2: border2.x,
+				y2: border2.y + ( border2.height / 2 ), // Start/end point
+				//cx3: border1.x + border1.width + 200,
+				//cy3: border1.y + ( border1.height / 2 ) + 150, // Control point
+				//cx4:  border1.x + border1.width + 50,
+				//cy4: 1, // Control point
+				//x3: border2.x ,
+				//y3: border2.y + ( border2.height / 2 ), // Start/end point
+				name : entity1 + "link" + entity2,
+				groups : [ entity1 + "link" + entity2 ],
+				dragGroups : [ entity1 + "link" + entity2 ],
+				click : doClick,
+			});
+		}
+
+		// ドラックアンドドロップすると線を再定義する
+		function onDrag(layer) {
+			console.log(layer.name);
+			var linkname = "/link/gi";
+			$("canvas").removeLayerGroup(/link/gi);
+		    //$("canvas").removeLayerGroup( "/" + linkname +"/gi");
+		    drawLink("g1","g2");
+		    drawLink("g2","g3");
+		}
+
+		function onDragStop(layer) {
+		}
+
+		function onDragCancel(layer) {
+		}
+
+		//クリックイベント
+		function doClick(layer) {
+			//console.log(layer.dragGroups);
+			//console.log(layer);
+		}
+
+		//クリックイベント
+		function doDoubleClick(layer) {
+			$("canvas").removeLayerGroup(layer.name);
+			//console.log(layer.dragGroups);
+			//console.log(layer);
+		}
 
 		/*]]>*/
 	</script>
