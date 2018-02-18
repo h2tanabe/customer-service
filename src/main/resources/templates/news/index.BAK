@@ -54,23 +54,23 @@
 								<i class="fa fa-gear fa-fw fa-spin"></i>PostgreSQL
 								<span class="text-muted small"><em>9.6.5</em></span>
 							</a>
-							<a href="#" class="list-group-item">
-								<span class="text-info">サーバ</span>
-								<i class="fa fa-gear fa-fw fa-spin"></i>さくらVPS
-							</a>
 						</div>
 				</div>
 				<span class="head-contents">サーバ情報</span>
 				<div class="panel-body panel-default">
 						<div class="list-group">
 							<a href="#" class="list-group-item">
+								<span class="text-info">サーバ</span>
+								<i class="fa fa-gear fa-fw fa-spin"></i>さくらVPS
+							</a>
+							<a href="#" class="list-group-item">
 								<span class="text-info">OS</span>
-								<i class="fa fa-gear fa-fw fa-spin"></i> CentOS
+								<i class="fa fa-gear fa-fw fa-spin"></i>CentOS
 							</a>
 							<a href="#" class="list-group-item">
 								<span class="text-info">ファイルパス</span>
 								<i class="fa fa-gear fa-fw fa-spin"></i>
-								<span class="text-muted small" th:text="${path}"><em>9.6.5</em></span>
+								<span class="text-muted small" th:text="${path}"><em>FolderPath</em></span>
 							</a>
 							<a href="#" class="list-group-item">
 								<span class="text-info">Jenkins</span>
