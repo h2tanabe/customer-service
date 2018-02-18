@@ -27,26 +27,28 @@
 	</div>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
-
 		//配置設定
 		$.jCanvas.defaults.fromCenter = false;
 		$.jCanvas.defaults.layer = true;
 
-		var columName1 = [ "users", "user_name", "encoded_password" ];
-		var columName2 = [ "address", "old_zip", "ken_cd", "ken_furi","city_furi", "town_furi", "ken_name", "city_name" ];
-		var columName3 = [ "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8",
-				"t9", "t10", "t11" ];
-		var columName4 = [ "メモ書き" ];
+		var columName1 = [ "users", "user_name [varchar]", "encoded_password [varchar]" ];
+		var columName2 = [ "address", "old_zip[int]", "ken_cd[int]", "ken_furi[varchar]","city_furi[varchar]", "town_furi[varchar]", "ken_name[varchar]", "city_name[varchar]" ];
+		//var columName3 = [ "ダミービュー", "t2", "t3", "t4", "t5", "t6", "t7", "t8","t9", "t10", "t11", "t12", "t14" ];
+		//var columName4 = [ "メモ書き" ];
+		//var columName5 = [ "test", "xxxxxxxxx1[char]", "xxxxxxxxx2[char]", "xxxxxxxxx3[char]", "xxxxxxxxx4[char]", "xxxxxxxxx5[char]", "xxxxxxxxx6[char]", "xxxxxxxxx7[int]","xxxxxxxxx8[int]", "xxxxxxxxx9[int]", "xxxxxxxxx10[int]", "xxxxxxxxx11[int]", "xxxxxxxxx12[int]" , "xxxxxxxxx13[int]"];
 
 		// 50にしているのが高さ。
 		createTable("g1", 50, 50, columName1, 'red');
 		createTable("g2", 300, 50, columName2, 'red');
-		createTable("g3", 400, 70, columName3, 'blue');
-		createMemoTable("m4", 600, 50, columName4, 'yellow');
+		//--createTable("g3", 500, 70, columName3, 'blue');
+		//--createTable("g5", 800, 80, columName5, 'white');
+		//--createMemoTable("m4", 600, 50, columName4, 'yellow');
 
 		// エンティティの線を引く
-		drawLink("g1","g2");
-		drawLink("g2","g3");
+
+		drawCurveLink("g1","g2");
+		//--drawCurveLink("g2","g3");
+		//--drawCurveLink("g2","g5");
 
 		// ERのテーブル作成
 		// 引数 グループ名、ヨコの距離、テタの距離、コラム名
@@ -72,13 +74,15 @@
 					fontFamily : "Verdana, sans-serif",
 					text : text,
 					name : name + "-text",
+
 					draggable : true, //図形のドロップアンドドラック
 					groups : [ tableName ],
 					dragGroups : [ tableName ],
 				});
 			}
 
-			//テキスト記載（横軸固定、縦30間隔）
+
+	//テキスト記載（横軸固定、縦30間隔）
 			for (var i = 0; i < columName.length; i++) {
 				// コラム記載
 				drawText(columName[i], xtext, ytext, columName[i], tableName);
@@ -181,6 +185,7 @@
 			//四角形
 			$("canvas").drawRect({
 				strokeStyle : "blue",
+
 				strokeWidth : 1,
 				x : xsquare,
 				y : ysquare,
@@ -198,7 +203,8 @@
 		        dragstop: onDragStop,
 		        dragcancel: onDragCancel
 			});
-		}
+
+	}
 
 		// 線を引き
 		function drawLink(entity1,entity2) {
@@ -210,20 +216,10 @@
 				strokeStyle : "black",
 				strokeWidth : 1,
 				draggable : false,
-				x1: border1.x + border1.width,
-				y1: border1.y + ( border1.height / 2 ), // Start point
-				//cx1: border1.x + border1.width + 100,
-				//cy1: border1.y + ( border1.height / 2 ), // Control point
-				//cx2: border1.x + border1.width + 150,
-				//cy2: border1.y + ( border1.height / 2 ) + 150, // Control point
+				x1: border1.x + border1.width ,
+				y1: border1.y + ( border1.height / 2 ),
 				x2: border2.x,
 				y2: border2.y + ( border2.height / 2 ), // Start/end point
-				//cx3: border1.x + border1.width + 200,
-				//cy3: border1.y + ( border1.height / 2 ) + 150, // Control point
-				//cx4:  border1.x + border1.width + 50,
-				//cy4: 1, // Control point
-				//x3: border2.x ,
-				//y3: border2.y + ( border2.height / 2 ), // Start/end point
 				name : entity1 + "link" + entity2,
 				groups : [ entity1 + "link" + entity2 ],
 				dragGroups : [ entity1 + "link" + entity2 ],
@@ -231,34 +227,126 @@
 			});
 		}
 
-		// ドラックアンドドロップすると線を再定義する
-		function onDrag(layer) {
-			console.log(layer.name);
-			var linkname = "/link/gi";
-			$("canvas").removeLayerGroup(/link/gi);
-		    //$("canvas").removeLayerGroup( "/" + linkname +"/gi");
-		    drawLink("g1","g2");
-		    drawLink("g2","g3");
-		}
+		// 曲線
+		function drawCurveLink(entity1,entity2) {
+			var border1 = $("canvas").getLayer(entity1);
+			var border2 = $("canvas").getLayer(entity2);
+			// 始点・終点
+			var startPointX;
+			var startPointY;
+			var endPointX;
+			var endPointY;
+			var halfPointX;
+			var halfPointY;
+			var temp1;
+			var temp2;
+			var halfLengthX;
+			var halfLengthY;
+			var cpLine;
+			var diffPoint;
+			var diffHeight;
+			cpLine = 100;
+			diffPoint = 300; // 上下の差が離れたら始点・終点入れ替える
+			// X軸：エンティティが逆転したら処理修正
+			if(border1.x < border2.x){
+				startPointX = border1.x + border1.width;
+				endPointX = border2.x;
+			}else{
+				startPointX = border2.x + border2.width;
+				endPointX = border1.x;
+			}
+			// Y軸：エンティティが逆転したら処理修正
+			if( (border1.y + ( border1.height / 2 )) < (border2.y + ( border2.height / 2 ))){
+				startPointY = border1.y + ( border1.height / 2 );
+				endPointY = border2.y + ( border2.height / 2 );
+			}
+			else{
 
-		function onDragStop(layer) {
-		}
+	startPointY =  border1.y + ( border1.height / 2 );
+				endPointY = border2.y + ( border2.height / 2 );
+			}
+			// X軸：反対ならY軸入れ替えるエンティティが逆転したら処理修正
+			if(border1.x > border2.x){
+				temp1 = startPointY;
+				temp2 = endPointY;
+				startPointY = temp2;
+				endPointY = temp1;
+				halfPointY = ((endPointY - startPointY) / 2 ) + startPointY;
+			}
+			// エンティティ下に行った場合
+			diffHeight = border2.y - border1.y;
+			if( diffHeight > diffPoint){
+				startPointX = border1.x + (border1.width / 2);
+				endPointX = border2.x + (border2.width / 2);
+				startPointY = border1.y + border1.height;
+				endPointY = border2.y;
+				cpLine = 50;
+			}
+			diffHeight = border1.y - border2.y;
+			if( diffHeight > diffPoint){
+				startPointX = border2.x + (border2.width / 2);
+				endPointX = border1.x + (border1.width / 2);
+				startPointY = border2.y + border2.height;
+				endPointY = border1.y;
+				cpLine = 50;
+			}
+			halfPointX = ((endPointX - startPointX) / 2 ) + startPointX;
+			halfPointY = ((endPointY - startPointY) / 2 ) + startPointY;
 
-		function onDragCancel(layer) {
-		}
+			halfLengthX = (endPointX - startPointX) / 2
+			halfLengthY = (endPointY - startPointY) / 2
+			//距離が短いと曲線から直線に変換
+			if(halfLengthX < (cpLine - 15)){
+				cpLine = 0;
+			}
 
-		//クリックイベント
-		function doClick(layer) {
-			//console.log(layer.dragGroups);
-			//console.log(layer);
-		}
+			$("canvas").drawBezier({
+				strokeStyle : "black",
+				strokeWidth : 1,
+				draggable : false,
+				x1: startPointX ,
+				y1: startPointY ,
+				cx1: halfPointX - cpLine, //上に上がる
+				cy1: halfPointY , //
+				cx2: halfPointX - cpLine ,
+				cy2: halfPointY ,
+				x2: halfPointX ,
+				y2: halfPointY,
+				cx3: halfPointX + cpLine,
+				cy3: halfPointY,
+				cx4: halfPointX + cpLine, //
+				cy4: halfPointY, //
+				x3: endPointX ,
+				y3: endPointY ,
+				name : entity1 + "link" + entity2,
+				groups : [ entity1 + "link" + entity2 ],
+				dragGroups : [ entity1 + "link" + entity2 ],
+				click : doClick,
+				});
+	        // ドラックアンドドロップすると線を再定義する
+	        function onDrag(layer) {
+	            var linkname = "/link/gi";
+	            $("canvas").removeLayerGroup(/link/gi);
+	            drawCurveLink("g1","g2");
+	            //drawCurveLink("g2","g3");
+	        }
 
-		//クリックイベント
-		function doDoubleClick(layer) {
-			$("canvas").removeLayerGroup(layer.name);
-			//console.log(layer.dragGroups);
-			//console.log(layer);
-		}
+	        function onDragStop(layer) {
+	        }
+
+	        function onDragCancel(layer) {
+	        }
+
+	        //クリックイベント
+	        function doClick(layer) {
+	        }
+
+	        //クリックイベント
+	        function doDoubleClick(layer) {
+	            $("canvas").removeLayerGroup(layer.name);
+	        }
+
+			}
 
 		/*]]>*/
 	</script>

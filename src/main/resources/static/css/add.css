@@ -1,8 +1,13 @@
-.c-label{
+.c-label {
 	color: #4A4A4A;
-    font-size: 1.1rem;
+	font-size: 1.1rem;
 }
 
-.inline-form{
+.inline-form {
 	display: inline;
+}
+
+.head-contents {
+	line-height: 1.25;
+	font-weight: 700;
 }

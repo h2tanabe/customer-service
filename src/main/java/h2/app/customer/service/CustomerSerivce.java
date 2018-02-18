@@ -30,6 +30,10 @@ public class CustomerSerivce {
 		return customerDao.selectAll("order by 1 desc");
 	}
 
+	public List<String> findSugget() {
+		return customerDao.selectSuggest();
+	}
+
 	public void insert(Customer customer) {
 		customerDao.insert(customer);
 	}

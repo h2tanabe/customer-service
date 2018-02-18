@@ -35,4 +35,7 @@ public interface CustomerDao {
 	@Select
 	List<Customer> selectAll(String orderBy);
 
+	@Select
+	List<String> selectSuggest();
+
 }

@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -76,7 +77,8 @@ public class CustomerController extends AbstractController{
 	}
 
 	@PostMapping("/create")
-	String create(@AuthenticationPrincipal UserDetails loginUser,
+	String create(RedirectAttributes attributes,
+				  @AuthenticationPrincipal UserDetails loginUser,
 				  @Validated CustomerForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return createPage(model);
@@ -92,6 +94,7 @@ public class CustomerController extends AbstractController{
 		customer.updatedBy = loginUser.getName();
 		customer.birthDate = DateUtils.stringToLoacleDate(form.getBirthDate());
 		customerService.insert(customer);
+		attributes.addFlashAttribute("successMessage", "顧客作成しました");
 		return "redirect:/customers/list";
 	}
 
