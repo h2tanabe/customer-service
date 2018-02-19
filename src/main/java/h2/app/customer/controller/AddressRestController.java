@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +75,11 @@ public class AddressRestController extends AbstractController {
 			Model model) throws Exception {
 		addressSerivce.deleteAll();
 		Pattern pat = Pattern.compile("^#.*\n", Pattern.MULTILINE);
+
+		Path path = Paths.get(System.getProperty("java.io.tmpdir"),
+				multipartFile.getOriginalFilename());
+		multipartFile.transferTo(path.toFile());
+
 		CsvMapper mapper = new CsvMapper();
 		CsvSchema schema = mapper.schemaFor(AddressCSV.class);
 		List<Address> adressList = new ArrayList<>();
@@ -106,14 +113,10 @@ public class AddressRestController extends AbstractController {
 				adress.createdAt = LocalDateTime.now();
 				adress.createdBy = "test";
 				adressList.add(adress);
-				System.out.println(line);
 			}
 			addressSerivce.batchInsert(adressList);
 			string.add(HttpStatus.OK.getReasonPhrase());
 			return string;
-			//statusOK(model);
-			//return "redirect:/address/create";
-
 		} catch (IOException | IllegalArgumentException | StringIndexOutOfBoundsException e) {
 			string.add(HttpStatus.BAD_REQUEST.getReasonPhrase());
 			return string;
