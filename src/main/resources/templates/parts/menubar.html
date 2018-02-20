@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -17,6 +17,9 @@
 		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" th:fragment="nav">
 			<div class="navbar-header">
 				<a class="navbar-brand" th:href="@{/news}">顧客管理システム</a>
+			</div>
+			<div class="nav navbar-top-links navbar-right in">
+				<div><span class="user" sec:authentication="principal.username">ログインユーザ</span>でログイン中</div>
 			</div>
 			<div class="navbar-default sidebar" role="navigation">
 				<div class="sidebar-nav navbar-collapse">
