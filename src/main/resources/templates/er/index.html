@@ -27,7 +27,7 @@
 	</div>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
-		//配置設定
+//配置設定
 		$.jCanvas.defaults.fromCenter = false;
 		$.jCanvas.defaults.layer = true;
 
@@ -46,7 +46,7 @@
 
 		// エンティティの線を引く
 
-		drawCurveLink("g1","g2");
+	drawCurveLink("g1","g2");
 		//--drawCurveLink("g2","g3");
 		//--drawCurveLink("g2","g5");
 
@@ -323,29 +323,6 @@
 				dragGroups : [ entity1 + "link" + entity2 ],
 				click : doClick,
 				});
-	        // ドラックアンドドロップすると線を再定義する
-	        function onDrag(layer) {
-	            var linkname = "/link/gi";
-	            $("canvas").removeLayerGroup(/link/gi);
-	            drawCurveLink("g1","g2");
-	            //drawCurveLink("g2","g3");
-	        }
-
-	        function onDragStop(layer) {
-	        }
-
-	        function onDragCancel(layer) {
-	        }
-
-	        //クリックイベント
-	        function doClick(layer) {
-	        }
-
-	        //クリックイベント
-	        function doDoubleClick(layer) {
-	            $("canvas").removeLayerGroup(layer.name);
-	        }
-
 			}
 
 		/*]]>*/

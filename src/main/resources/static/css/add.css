@@ -11,3 +11,12 @@
 	line-height: 1.25;
 	font-weight: 700;
 }
+
+.result {
+    opacity: 0;
+}
+.loadig{
+    left:50%;
+    top:50%;
+    position: fixed;
+}
