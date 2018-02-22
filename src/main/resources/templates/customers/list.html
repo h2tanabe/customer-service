@@ -7,10 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>顧客管理</title>
 <link th:replace="parts/header :: link" />
-<link rel="stylesheet" type="text/css"
-	th:href="@{/webjars/datatables/1.10.16/css/dataTables.bootstrap.min.css}" />
-<link rel="stylesheet" type="text/css"
-	th:href="@{/webjars/datatables/1.10.16/css/jquery.dataTables.min.css}" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
 </head>
 <body>
 	<div id="wrapper">
@@ -83,10 +81,10 @@
 								<a th:onclick="'pagination(' + ${i - 1} + ');'" th:text="${i - 1}" >1</a>
 							</li>
 						</ul>
-						<table class="table table-striped table-bordered table-hover" id="dataTables-customer">
+						<table class="table table-hover table-striped table-bordered" id="dataTables-customer">
 							<thead>
 								<tr>
-									<th class="col-lg-2" style="width:10%;"></th>
+									<th class="col-lg-2"></th>
 									<th class="col-lg-2">顧客名</th>
 									<th class="col-lg-2">住所</th>
 									<th class="col-lg-2">メールアドレス</th>
@@ -119,15 +117,35 @@
 			</div>
 		</div>
 	</div>
-	<script src=""
-		th:src="@{/webjars/datatables/1.10.16/js/jquery.dataTables.min.js}"></script>
-	<script src=""
-		th:src="@{/webjars/datatables/1.10.16/js/dataTables.bootstrap.min.js}"></script>
+	<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		$(function () {
-		  $('[data-toggle="tooltip"]').tooltip()
+		  $('[data-toggle="tooltip"]').tooltip();
 		});
+
+		$(document).ready(function() {
+		    $.extend( $.fn.dataTable.defaults, {
+		        language: {
+		            url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Japanese.json"
+		        }
+		    });
+		    $('#dataTables-customer').DataTable( {
+		    	ordering: false,
+		    	searching: false,
+		    	lengthChange: false,
+		        columns: [
+		            {},
+		            {},
+		            {},
+		            {},
+		            {},
+		            {}
+		        ]
+		    });
+		});
+
 		$("#btn-search").one("click", function() {
 			$("#search-form").submit();
 			return false;

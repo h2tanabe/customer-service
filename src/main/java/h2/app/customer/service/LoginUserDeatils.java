@@ -15,8 +15,8 @@ public class LoginUserDeatils extends org.springframework.security.core.userdeta
 		super(	user.userName
 				// Spring5からエンコード必要 Pbkdf2PasswordEncoder
 				// There is no PasswordEncoder mapped for the id "null"
-				,PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(user.encodedPassword),
-				AuthorityUtils.createAuthorityList("USER"));
+				,PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(user.encodedPassword)
+				,AuthorityUtils.createAuthorityList("USER"));
 		this.user = user;
 	}
 

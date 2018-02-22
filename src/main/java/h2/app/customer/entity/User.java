@@ -4,6 +4,8 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * ユーザテーブルのエンティティクラスです。
  */
@@ -20,6 +22,7 @@ public class User extends BaseEntity {
     /**
      * パスワード
      */
+	@JsonIgnore
     public String encodedPassword;
 
 }

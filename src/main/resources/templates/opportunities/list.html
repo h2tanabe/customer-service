@@ -45,8 +45,8 @@
 									<th class="col-lg-2">商談名</th>
 									<th class="col-lg-2">ステータス</th>
 									<th class="col-lg-2">金額</th>
-									<th class="col-lg-2">顧客名</th>
-									<th class="col-lg-2">郵便番号</th>
+									<th class="col-lg-2 text-danger">顧客名</th>
+									<th class="col-lg-2 text-danger">郵便番号</th>
 								</tr>
 							</thead>
 							<tbody th:each="opportunity : ${page}">
@@ -64,8 +64,8 @@
 									<td th:text="${opportunity.name}" class="center">商談名</td>
 									<td th:text="${opportunity.status}" class="center">未受注</td>
 									<td th:text="${opportunity.ammount}" class="center">100</td>
-									<td th:text="${opportunity.customerName}" class="center">田中太郎</td>
-									<td th:text="${opportunity.postalCode}" class="center">100099</td>
+									<td th:text="${opportunity.customerName}" class="center text-danger">田中太郎</td>
+									<td th:text="${opportunity.postalCode}" class="center text-danger">100099</td>
 								</tr>
 							</tbody>
 						</table>
